@@ -17,15 +17,15 @@ namespace MatrixMultiplierExam
 
         static void Main(string[] args)
         {
-            var isArgCountValid = args.Length == 2;
+            var isArgCountValid = args.Length == 1;
             if (!isArgCountValid)
             {
-                Console.Error.WriteLine("Invalid argument count. A folder name is expected.");
+                Console.Error.WriteLine($"Invalid argument count. A folder name is expected. Actual: [{string.Join(", ", args)}]");
                 ConsoleHelper.WaitForEnterPressed();
                 return;
             }
 
-            var folderName = args[1];
+            var folderName = string.Join(" ", args).Replace(@"""", "");
             var folderExists = Directory.Exists(folderName);
             if (!folderExists)
             {
