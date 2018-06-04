@@ -6,12 +6,12 @@ namespace MatrixMultiplierExam
 {
     public class Matrix
     {
-        public Matrix(int[,] values)
+        public Matrix(long[,] values)
         {
             _values = values;
         }
 
-        public Matrix(IList<IList<int>> matrixCells)
+        public Matrix(IList<IList<long>> matrixCells)
         {
             if (!matrixCells.Any())
             {
@@ -23,7 +23,7 @@ namespace MatrixMultiplierExam
             }
             var rowCount = matrixCells.Count;
             var colCount = matrixCells[0].Count;
-            _values = new int[rowCount, colCount];
+            _values = new long[rowCount, colCount];
             foreach (var rowIndex in Enumerable.Range(0, rowCount))
             {
                 foreach (var colIndex in Enumerable.Range(0, colCount))
@@ -33,12 +33,12 @@ namespace MatrixMultiplierExam
             }
         }
 
-        private readonly int[,] _values;
+        private readonly long[,] _values;
 
         public int RowCount => _values.GetLength(0);
         public int ColumnCount => _values.GetLength(1);
 
-        public int this[int rowIndex, int columnIndex]
+        public long this[int rowIndex, int columnIndex]
         {
             get
             {
@@ -48,12 +48,12 @@ namespace MatrixMultiplierExam
             }
         }
 
-        public IEnumerable<int> this[int rowIndex]
+        public IEnumerable<long> this[int rowIndex]
         {
             get
             {
                 CheckRowIndex(rowIndex);
-                return _values.Cast<int>().Skip(rowIndex * ColumnCount).Take(ColumnCount);
+                return _values.Cast<long>().Skip(rowIndex * ColumnCount).Take(ColumnCount);
             }
         }
 
@@ -79,7 +79,7 @@ namespace MatrixMultiplierExam
 
         public Matrix GetTransposed()
         {
-            var result = new int[ColumnCount, RowCount];
+            var result = new long[ColumnCount, RowCount];
             foreach (var sourceRowIndex in Enumerable.Range(0, RowCount))
             {
                 foreach (var sourceColIndex in Enumerable.Range(0, ColumnCount))
@@ -132,7 +132,7 @@ namespace MatrixMultiplierExam
             var resultColumnCount = right.ColumnCount;
             var resultRowCount = left.RowCount;
             var addendCount = left.ColumnCount;
-            var result = new int[resultRowCount, resultColumnCount];
+            var result = new long[resultRowCount, resultColumnCount];
             foreach (var resultRowIndex in Enumerable.Range(0, resultRowCount))
             {
                 foreach (var resultColIndex in Enumerable.Range(0, resultColumnCount))
@@ -146,11 +146,11 @@ namespace MatrixMultiplierExam
             return new Matrix(result);
         }
 
-        private static Matrix PerformOneElementAtATimeOperation(Matrix left, Matrix right, Func<int, int, int> operation)
+        private static Matrix PerformOneElementAtATimeOperation(Matrix left, Matrix right, Func<long, long, long> operation)
         {
             var rowCount = left.RowCount;
             var colCount = left.ColumnCount;
-            var result = new int[rowCount, colCount];
+            var result = new long[rowCount, colCount];
             foreach (var rowIndex in Enumerable.Range(0, rowCount))
             {
                 foreach (var colIndex in Enumerable.Range(0, colCount))

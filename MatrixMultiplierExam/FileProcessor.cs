@@ -59,14 +59,14 @@ namespace MatrixMultiplierExam
             return lines.AsOrToArray();
         }
 
-        private static IEnumerable<Matrix> ParseMatrices(string[] fileContents, IList<int> gapLineIndexes)
+        private static IEnumerable<Matrix> ParseMatrices(IReadOnlyCollection<string> fileContents, IList<int> gapLineIndexes)
         {
             var matrices = new List<Matrix>(gapLineIndexes.Count);
             foreach (var matrixIndex in Enumerable.Range(0, gapLineIndexes.Count))
             {
                 var nextGapOrEndfile = matrixIndex + 1 < gapLineIndexes.Count
                     ? gapLineIndexes[matrixIndex + 1]
-                    : fileContents.Length;
+                    : fileContents.Count;
                 var prevGapLineIndex = gapLineIndexes[matrixIndex];
                 var matrixRowCount = nextGapOrEndfile - 1 - prevGapLineIndex;
                 var matrixLines = fileContents
@@ -87,12 +87,12 @@ namespace MatrixMultiplierExam
             return matrices;
         }
 
-        private static IList<IList<int>> ParseMatrix(IEnumerable<string> matrixLines)
+        private static IList<IList<long>> ParseMatrix(IEnumerable<string> matrixLines)
         {
-            IList<IList<int>> matrixCells;
+            IList<IList<long>> matrixCells;
             try
             {
-                matrixCells = matrixLines.Select(e => e.Split(' ').Select(int.Parse).AsIListOrToList()).AsIListOrToList();
+                matrixCells = matrixLines.Select(e => e.Split(' ').Select(long.Parse).AsIListOrToList()).AsIListOrToList();
             }
             catch (Exception)
             {
