@@ -64,11 +64,13 @@ namespace MatrixMultiplierExam
             var matrices = new List<Matrix>(gapLineIndexes.Count);
             foreach (var matrixIndex in Enumerable.Range(0, gapLineIndexes.Count))
             {
-                var matrixRowCount = matrixIndex + 1 < gapLineIndexes.Count
+                var nextGapOrEndfile = matrixIndex + 1 < gapLineIndexes.Count
                     ? gapLineIndexes[matrixIndex + 1]
                     : fileContents.Length;
+                var prevGapLineIndex = gapLineIndexes[matrixIndex];
+                var matrixRowCount = nextGapOrEndfile - 1 - prevGapLineIndex;
                 var matrixLines = fileContents
-                    .Skip(gapLineIndexes[matrixIndex] + 1)
+                    .Skip(prevGapLineIndex + 1)
                     .Take(matrixRowCount);
                 var matrixCells = ParseMatrix(matrixLines);
                 if (!matrixCells.Any())

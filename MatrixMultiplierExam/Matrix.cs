@@ -23,12 +23,12 @@ namespace MatrixMultiplierExam
             }
             var rowCount = matrixCells.Count;
             var colCount = matrixCells[0].Count;
-            var matrixArray = new int[rowCount, colCount];
+            _values = new int[rowCount, colCount];
             foreach (var rowIndex in Enumerable.Range(0, rowCount))
             {
                 foreach (var colIndex in Enumerable.Range(0, colCount))
                 {
-                    matrixArray[rowIndex, colIndex] = matrixCells[rowIndex][colIndex];
+                    _values[rowIndex, colIndex] = matrixCells[rowIndex][colIndex];
                 }
             }
         }
@@ -129,9 +129,9 @@ namespace MatrixMultiplierExam
         /// </summary>
         private static Matrix PerformMatrixMultiplication(Matrix left, Matrix right)
         {
-            var resultColumnCount = left.ColumnCount;
-            var resultRowCount = right.RowCount;
-            var addendCount = left.RowCount;
+            var resultColumnCount = right.ColumnCount;
+            var resultRowCount = left.RowCount;
+            var addendCount = left.ColumnCount;
             var result = new int[resultRowCount, resultColumnCount];
             foreach (var resultRowIndex in Enumerable.Range(0, resultRowCount))
             {

@@ -73,11 +73,13 @@ namespace MatrixMultiplierExam
                 Interlocked.Add(ref _bytesProcessed, fileSizes[fileName]);
                 consoleSemaphore.Lock(TimeSpan.FromSeconds(2), WriteProgress);
             });
+
+            ConsoleHelper.WaitForEnterPressed();
         }
 
         private static bool AskOverwrite()
         {
-            Console.WriteLine("Folder contains one or more result files. Do you wish to overwrite them? [y]/n");
+            Console.WriteLine("Folder contains one or more result files. Do you wish to delete them? [y]/n");
             while (true)
             {
                 var result = Console.ReadKey();
