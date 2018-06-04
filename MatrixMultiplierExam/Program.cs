@@ -68,12 +68,27 @@ namespace MatrixMultiplierExam
             {
                 var filePath = Path.Combine(folderName, fileName);
                 var resultPath = Path.Combine(folderName, GetResultFileName(fileName));
-                TryProcessFileAndWriteErrorToConsole(filePath, resultPath);
+                bool isSuccess;
+                try
+                {
+                    FileProcessor.ProcessFile(filePath, resultPath);
+                    isSuccess = true;
+                }
+                catch (Exception ex)
+                {
+                    consoleSemaphore.Lock(TimeSpan.FromSeconds(5), () => WriteError(fileName, ex.Message));
+                    isSuccess = false;
+                }
+                if (isSuccess)
+                {
+                    consoleSemaphore.Lock(TimeSpan.FromSeconds(5), () => WriteSuccess(fileName));
+                }
                 Interlocked.Increment(ref _filesProcessed);
                 Interlocked.Add(ref _bytesProcessed, fileSizes[fileName]);
                 consoleSemaphore.Lock(TimeSpan.FromSeconds(2), WriteProgress);
             });
 
+            Console.WriteLine();
             ConsoleHelper.WaitForEnterPressed();
         }
 
@@ -111,23 +126,23 @@ namespace MatrixMultiplierExam
             return $"{Path.GetFileNameWithoutExtension(sourceFileName)}_result.txt";
         }
 
+        private static void WriteSuccess(string fileName)
+        {
+            ConsoleHelper.CleanCurrentLine();
+            Console.WriteLine($@"Successfully processed ""{fileName}"".");
+        }
+
+        private static void WriteError(string fileName, string message)
+        {
+            ConsoleHelper.CleanCurrentLine();
+            Console.WriteLine($@"Could not process file at ""{fileName}"".");
+            Console.WriteLine(message);
+        }
+
         private static void WriteProgress()
         {
             ConsoleHelper.CleanCurrentLine();
             Console.Write($"Processed {_filesProcessed} of {_fileCount} files ({(_filesProcessed/_fileCount):P1}), {_bytesProcessed} of {_fileSizesSum} ({(_bytesProcessed/_fileSizesSum):P1}). ");
-        }
-
-        private static void TryProcessFileAndWriteErrorToConsole(string filePath, string resultPath)
-        {
-            try
-            {
-                FileProcessor.ProcessFile(filePath, resultPath);
-            }
-            catch (Exception ex)
-            {
-                ConsoleHelper.CleanCurrentLine();
-                Console.Error.WriteLine(ex.Message);
-            }
         }
     }
 }
