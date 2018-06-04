@@ -139,7 +139,7 @@ namespace MatrixMultiplierExam
                 {
                     foreach (var addendIndex in Enumerable.Range(0, addendCount))
                     {
-                        result[resultRowIndex, resultColIndex] += left[addendIndex, resultColIndex] * right[resultRowIndex, addendIndex];
+                        result[resultRowIndex, resultColIndex] += left[resultRowIndex, addendIndex] * right[addendIndex, resultColIndex];
                     }
                 }
             }

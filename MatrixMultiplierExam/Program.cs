@@ -114,7 +114,7 @@ namespace MatrixMultiplierExam
         private static void WriteProgress()
         {
             ConsoleHelper.CleanCurrentLine();
-            Console.Write($"Processed {_filesProcessed} of {_fileCount} files ({(_filesProcessed/_fileCount):P1}), {_bytesProcessed} of {_fileSizesSum} ({(_bytesProcessed/_fileSizesSum):P1}");
+            Console.Write($"Processed {_filesProcessed} of {_fileCount} files ({(_filesProcessed/_fileCount):P1}), {_bytesProcessed} of {_fileSizesSum} ({(_bytesProcessed/_fileSizesSum):P1}). ");
         }
 
         private static void TryProcessFileAndWriteErrorToConsole(string filePath, string resultPath)
